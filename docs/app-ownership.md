@@ -120,12 +120,12 @@ Track alignment between the canonical token source and each consumer:
 
 | File | Declared version | Primary color | Alignment |
 |------|-----------------|---------------|-----------|
-| `tokens/tokens.json` | 1.2.0 | `#124170` Navy | ← source |
-| `components/prototypes/colors_and_type.css` | 1.3.0 (comment) | `#67C090` Green | ⚠️ Ahead — unreleased v1.3.0 |
-| `generated/web/tokens.css` | 1.2.0 | `#124170` Navy | ✅ In sync with tokens.json |
-| `generated/blazor/RoomRentalTheme.cs` | 1.2.0 | `#124170` Navy | ✅ In sync with tokens.json |
-| `generated/mobile/tokens.json` | 1.2.0 | `#124170` Navy | ✅ In sync with tokens.json |
+| `tokens/tokens.json` | **2.0.0** | `#67C090` Green | ← source |
+| `generated/prototype/base.css` | 2.0.0 | `#67C090` Green | ✅ Generated — always in sync |
+| `generated/web/tokens.css` | 2.0.0 | `#67C090` Green | ✅ Generated — always in sync |
+| `generated/blazor/RoomRentalTheme.cs` | 2.0.0 | `#67C090` Green | ✅ Generated — always in sync |
+| `generated/mobile/tokens.json` | 2.0.0 | `#67C090` Green | ✅ Generated — always in sync |
 
-**Pending decision**: Promote `colors_and_type.css` v1.3.0 changes (green as primary)
-into `tokens.json`, bump to v2.0.0 (breaking: primary role change), and regenerate all
-`generated/` files.
+> **Phase 1 complete (2026-05-21)**: `colors_and_type.css` (manually maintained, v1.3.0)
+> has been deleted. All prototype CSS is now generated from `tokens.json` via
+> `node scripts/generate-tokens.js`. Drift is structurally impossible.

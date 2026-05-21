@@ -1,4 +1,4 @@
-/* AuthServer-only styles. Tokens come from ../colors_and_type.css */
+/* AuthServer-only styles. Tokens come from generated/prototype/base.css (loaded by index.html) */
 
 * { box-sizing: border-box; }
 html, body, #root { height: 100%; }

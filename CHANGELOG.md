@@ -7,6 +7,40 @@ Types: `Added` | `Changed` | `Deprecated` | `Removed` | `Fixed`
 
 ---
 
+## [2.0.0] — 2026-05-21  ⚠️ BREAKING
+
+### Breaking changes
+- **Color role rotation** — green, navy, and teal have swapped semantic roles:
+  | Token | v1.x value | v2.0 value |
+  |-------|-----------|------------|
+  | `color.primary.DEFAULT` | `#124170` Navy | `#67C090` **Green** |
+  | `color.secondary.DEFAULT` | `#26667F` Teal | `#124170` **Navy** |
+  | `color.tertiary.DEFAULT` | `#67C090` Green | `#26667F` **Teal** |
+  - All consumers of `color.primary.*`, `color.secondary.*`, `color.tertiary.*` tokens must test rendering after upgrade.
+  - Blazor: `RoomRentalTheme.Create()` — `Primary` button is now green; appbar/drawer stays navy via `Secondary`.
+- **Blazor appbar/drawer** now uses `color.secondary.DEFAULT` (navy) instead of `color.primary.DEFAULT`. The generated C# theme `DrawerBackground` and `AppbarBackground` have been corrected.
+
+### Added
+- `color.secondary.on-dim` — `rgba(255,255,255,0.72)` — dimmed white for secondary text on navy chrome
+- `color.divider.strong` — `rgba(18,65,112,0.24)` — stronger divider for field borders and card outlines
+- `typography.font-family.display` — `'Inter Tight', 'Inter', …` — brand display face token
+- `typography.font-family.icon` — `'Material Symbols Outlined'` — icon font token
+- `typography.font-weight.semibold` — `600` — between medium and bold
+- **`generated/prototype/base.css`** — new generated output with simplified CSS variable names for prototype development. Replaces the manually-maintained `colors_and_type.css`.
+
+### Changed
+- `generate-tokens.js` now outputs `generated/prototype/base.css` (simplified names: `--color-primary`, `--sp-4`, `--radius-md`, …).
+- Prototype `index.html` files updated to import `generated/prototype/base.css` instead of `colors_and_type.css`.
+
+### Removed
+- `components/prototypes/colors_and_type.css` — **deleted**. Was manually maintained and caused version drift. Replaced by the generated `generated/prototype/base.css`.
+
+### Fixed
+- Blazor theme generator: `Button.FontWeight` updated to use `typography.font-weight.semibold` (was `medium`).
+- `DividerLight` in Blazor theme now maps to `color.divider.strong` (was a hardcoded literal).
+
+---
+
 ## [1.2.0] — 2026-05-20
 
 ### Changed

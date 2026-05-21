@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually. Run: node scripts/generate-tokens.js
-// Room Rental Design System — v1.2.0 — 2026-05-20
+// Room Rental Design System — v2.0.0 — 2026-05-21
 // MudBlazor 9.x
 
 using MudBlazor;
@@ -8,7 +8,7 @@ namespace RoomRental.Design;
 
 /// <summary>
 /// Central MudBlazor theme for all Blazor WASM applications in the Room Rental system.
-/// Reference this from Program.cs: builder.Services.AddMudServices(c => c.Theme = RoomRentalTheme.Create());
+/// Usage in Program.cs: builder.Services.AddMudServices(c => c.Theme = RoomRentalTheme.Create());
 /// </summary>
 public static class RoomRentalTheme
 {
@@ -16,19 +16,19 @@ public static class RoomRentalTheme
     {
         PaletteLight = new PaletteLight
         {
-            Primary            = "#124170",
-            PrimaryContrastText= "#FFFFFF",
-            PrimaryDarken      = "#0C2E53",
-            PrimaryLighten     = "#DDF4E7",
+            Primary            = "#67C090",
+            PrimaryContrastText= "#124170",
+            PrimaryDarken      = "#4DA07A",
+            PrimaryLighten     = "#EAF8F1",
 
-            Secondary            = "#26667F",
+            Secondary            = "#124170",
             SecondaryContrastText= "#FFFFFF",
-            SecondaryDarken      = "#1B4D62",
-            SecondaryLighten     = "#C5DCE6",
+            SecondaryDarken      = "#0C2E53",
+            SecondaryLighten     = "#DDE9F2",
 
-            Tertiary            = "#67C090",
-            TertiaryContrastText= "#124170",
-            TertiaryLighten     = "#EAF8F1",
+            Tertiary            = "#26667F",
+            TertiaryContrastText= "#FFFFFF",
+            TertiaryLighten     = "#C5DCE6",
 
             Success = "#67C090",
             Error   = "#C62828",
@@ -46,7 +46,7 @@ public static class RoomRentalTheme
             TextDisabled  = "rgba(18,65,112,0.38)",
 
             Divider      = "rgba(18,65,112,0.12)",
-            DividerLight = "rgba(18,65,112,0.06)",
+            DividerLight = "rgba(18,65,112,0.24)",
 
             OverlayDark  = "rgba(0,0,0,0.5)",
             OverlayLight = "rgba(255,255,255,0.7)",
@@ -59,12 +59,12 @@ public static class RoomRentalTheme
         {
             Primary            = "#67C090",
             PrimaryContrastText= "#124170",
-            PrimaryDarken      = "#0C2E53",
-            PrimaryLighten     = "#DDF4E7",
+            PrimaryDarken      = "#4DA07A",
+            PrimaryLighten     = "#EAF8F1",
 
             Secondary            = "#26667F",
             SecondaryContrastText= "#FFFFFF",
-            SecondaryDarken      = "#1B4D62",
+            SecondaryDarken      = "#0C2E53",
 
             Tertiary            = "#DDF4E7",
             TertiaryContrastText= "#124170",
@@ -114,7 +114,7 @@ public static class RoomRentalTheme
             Body1   = new Body1   { FontSize = "0.875rem",  FontWeight = 400 },
             Body2   = new Body2   { FontSize = "0.75rem",  FontWeight = 400 },
             Caption = new Caption { FontSize = "0.75rem", FontWeight = 400 },
-            Button  = new Button  { FontSize = "0.875rem",  FontWeight = 500, TextTransform = "uppercase" },
+            Button  = new Button  { FontSize = "0.875rem",  FontWeight = 600, TextTransform = "uppercase" },
             Overline= new Overline{ FontSize = "0.6875rem", FontWeight = 400, TextTransform = "uppercase" },
         },
 

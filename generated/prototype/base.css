@@ -1,0 +1,249 @@
+/* =============================================================
+   Auto-generated — do not edit manually.
+   Run: node scripts/generate-tokens.js
+   Room Rental Design System — v2.0.0 — 2026-05-21
+   Palette: https://colorhunt.co/palette/ddf4e767c09026667f124170
+   ============================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap');
+
+/* Inter Tight — brand display face (self-hosted).
+   Weights available: Light(300) Bold(700) Black(900).
+   Regular(400) and Medium(500) are MISSING — h1/h2 use weight 300; body falls through to Inter. */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('../../components/prototypes/fonts/InterTight-Light.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../../components/prototypes/fonts/InterTight-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('../../components/prototypes/fonts/InterTight-Black.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: italic;
+  font-weight: 900;
+  font-display: swap;
+  src: url('../../components/prototypes/fonts/InterTight-BlackItalic.ttf') format('truetype');
+}
+
+:root {
+  /* ── Raw palette (4 brand colors) ── */
+  --rr-mint: #DDF4E7;
+  --rr-green: #67C090;
+  --rr-teal: #26667F;
+  --rr-navy: #124170;
+
+  /* ── Color — Primary ── */
+  --color-primary: #67C090;
+  --color-primary-dark: #4DA07A;
+  --color-primary-container: #EAF8F1;
+  --color-primary-on: #124170;
+  --color-primary-on-container: #124170;
+
+  /* ── Color — Secondary ── */
+  --color-secondary: #124170;
+  --color-secondary-dark: #0C2E53;
+  --color-secondary-container: #DDE9F2;
+  --color-secondary-on: #FFFFFF;
+  --color-secondary-on-dim: rgba(255,255,255,0.72);
+  --color-secondary-on-container: #124170;
+
+  /* ── Color — Tertiary ── */
+  --color-tertiary: #26667F;
+  --color-tertiary-dark: #1B4D62;
+  --color-tertiary-container: #C5DCE6;
+  --color-tertiary-on: #FFFFFF;
+  --color-tertiary-on-container: #124170;
+
+  /* ── Color — Semantic ── */
+  --color-success: #67C090;
+  --color-success-on: #124170;
+  --color-error: #C62828;
+  --color-error-on: #FFFFFF;
+  --color-warning: #E65100;
+  --color-warning-on: #FFFFFF;
+  --color-info: #26667F;
+  --color-info-on: #FFFFFF;
+
+  /* ── Color — Surface ── */
+  --color-bg: #DDF4E7;
+  --color-surface: #FFFFFF;
+  --color-surface-dim: #C8EDD9;
+
+  /* ── Color — Text ── */
+  --fg-1: #0F1E2D;
+  --fg-2: #3D5970;
+  --fg-disabled: rgba(18,65,112,0.38);
+  --fg-hint: rgba(18,65,112,0.38);
+
+  /* ── Color — Divider ── */
+  --divider: rgba(18,65,112,0.12);
+  --divider-strong: rgba(18,65,112,0.24);
+
+  /* ── Typography — Fonts ── */
+  --font-base: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  --font-icon: 'Material Symbols Outlined';
+
+  /* ── Typography — Sizes ── */
+  --fs-h1: 2rem;
+  --fs-h2: 1.5rem;
+  --fs-h3: 1.25rem;
+  --fs-h4: 1.125rem;
+  --fs-h5: 1rem;
+  --fs-h6: 0.875rem;
+  --fs-body1: 0.875rem;
+  --fs-body2: 0.75rem;
+  --fs-subtitle1: 0.875rem;
+  --fs-subtitle2: 0.75rem;
+  --fs-caption: 0.75rem;
+  --fs-overline: 0.6875rem;
+  --fs-button: 0.875rem;
+
+  /* ── Typography — Weights ── */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ── Typography — Line heights ── */
+  --lh-tight: 1.25;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.75;
+
+  /* ── Spacing ── */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+
+  /* ── Border — Radius ── */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* ── Border — Width ── */
+  --border-thin: 1px;
+  --border-medium: 2px;
+
+  /* ── Elevation ── */
+  --elev-0: none;
+  --elev-1: 0 2px 1px -1px rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 1px 3px 0 rgba(0,0,0,0.12);
+  --elev-2: 0 3px 1px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+  --elev-4: 0 2px 4px -1px rgba(0,0,0,0.2), 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12);
+  --elev-8: 0 5px 5px -3px rgba(0,0,0,0.2), 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12);
+  --elev-16: 0 8px 10px -5px rgba(0,0,0,0.2), 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12);
+
+  /* ── Breakpoints ── */
+  --bp-xs: 0px;
+  --bp-sm: 600px;
+  --bp-md: 960px;
+  --bp-lg: 1280px;
+  --bp-xl: 1920px;
+
+  /* ── Z-index ── */
+  --z-drawer: 1200;
+  --z-appbar: 1100;
+  --z-modal: 1300;
+  --z-snackbar: 1400;
+  --z-tooltip: 1500;
+
+  /* ── Derived aliases (semantic shortcuts for prototypes) ── */
+  --color-appbar:  var(--color-secondary);     /* navy — appbar + drawer chrome */
+  --fg-on-navy:    var(--color-secondary-on);  /* white on navy */
+  --fg-on-navy-2:  var(--color-secondary-on-dim); /* white 72% on navy — supporting text */
+}
+
+/* =============================================================
+   Semantic type styles
+   ============================================================= */
+
+html, body {
+  font-family: var(--font-base);
+  font-size: var(--fs-body1);
+  line-height: var(--lh-normal);
+  color: var(--fg-1);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, .h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  font-weight: 300;            /* Inter Tight Light — brand display weight */
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--sp-4);
+  letter-spacing: -0.015em;
+}
+h2, .h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 300;
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--sp-3);
+  letter-spacing: -0.01em;
+}
+h3, .h3 { font-size: var(--fs-h3); font-weight: var(--fw-regular); line-height: var(--lh-tight); margin: 0 0 var(--sp-3); }
+h4, .h4 { font-size: var(--fs-h4); font-weight: var(--fw-medium);  line-height: var(--lh-tight); margin: 0 0 var(--sp-2); }
+h5, .h5 { font-size: var(--fs-h5); font-weight: var(--fw-medium);  line-height: var(--lh-tight); margin: 0 0 var(--sp-2); }
+h6, .h6 { font-size: var(--fs-h6); font-weight: var(--fw-medium);  line-height: var(--lh-tight); margin: 0 0 var(--sp-2); }
+
+p, .body1  { font-size: var(--fs-body1); line-height: var(--lh-normal); margin: 0 0 var(--sp-3); }
+.body2, small { font-size: var(--fs-body2); line-height: var(--lh-normal); }
+.subtitle1 { font-size: var(--fs-subtitle1); font-weight: var(--fw-regular); line-height: var(--lh-normal); }
+.subtitle2 { font-size: var(--fs-subtitle2); font-weight: var(--fw-medium);  line-height: var(--lh-normal); }
+.caption   { font-size: var(--fs-caption);   font-weight: var(--fw-regular); color: var(--fg-2); }
+.overline  {
+  font-size: var(--fs-overline);
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-2);
+}
+code, kbd, samp, .mono { font-family: var(--font-mono); font-size: 0.92em; }
+
+/* Material Symbols Outlined helper */
+.material-symbols-outlined {
+  font-family: var(--font-icon);
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  vertical-align: middle;
+}
+.material-symbols-outlined.filled { font-variation-settings: 'FILL' 1; }

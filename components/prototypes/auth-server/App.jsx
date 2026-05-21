@@ -1,5 +1,5 @@
 // AuthServer.UI Kit — recreation of HouseLeaf's Blazor auth surface.
-// Vietnamese copy. Tokens from ../colors_and_type.css.
+// Vietnamese copy. Tokens from generated/prototype/base.css (loaded by index.html).
 
 const { useState, useEffect } = React;
 
