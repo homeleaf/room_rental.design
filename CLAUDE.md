@@ -92,7 +92,7 @@ The mapping from token keys to prototype CSS vars is defined in `scripts/generat
 - **Never** create a manually-maintained CSS/JS file that duplicates token values — add to tokens.json instead
 - Every breaking change (token renamed, removed, or role changed) must bump the **major** version in `$metadata.version`
 - Add a CHANGELOG entry for every merge to main
-- Ownership of every screen and component is tracked in `docs/app-ownership.md`
+- Integration guide for each stack (Blazor, Vue 3, React) is in `docs/integration-guide.md` (VI) and `docs/integration-guide.en.md` (EN)
 
 ## Color Roles (v2.0.0)
 
