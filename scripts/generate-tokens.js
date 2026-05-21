@@ -223,6 +223,17 @@ const PROTOTYPE_ALIAS = {
   "z-index-modal":    "--z-modal",
   "z-index-snackbar": "--z-snackbar",
   "z-index-tooltip":  "--z-tooltip",
+  // ── Motion: Duration ────────────────────────────────────────────────────
+  "motion-duration-instant":    "--duration-instant",
+  "motion-duration-fast":       "--duration-fast",
+  "motion-duration-normal":     "--duration-normal",
+  "motion-duration-slow":       "--duration-slow",
+  "motion-duration-deliberate": "--duration-deliberate",
+  // ── Motion: Easing ──────────────────────────────────────────────────────
+  "motion-easing-standard":     "--easing-standard",
+  "motion-easing-decelerate":   "--easing-decelerate",
+  "motion-easing-accelerate":   "--easing-accelerate",
+  "motion-easing-sharp":        "--easing-sharp",
 };
 
 function generatePrototypeCss(flat, tokens) {
@@ -297,6 +308,8 @@ function generatePrototypeCss(flat, tokens) {
     ["Elevation",  ["elevation-0","elevation-1","elevation-2","elevation-4","elevation-8","elevation-16"]],
     ["Breakpoints",["breakpoint-xs","breakpoint-sm","breakpoint-md","breakpoint-lg","breakpoint-xl"]],
     ["Z-index",    ["z-index-drawer","z-index-appbar","z-index-modal","z-index-snackbar","z-index-tooltip"]],
+    ["Motion — Duration", ["motion-duration-instant","motion-duration-fast","motion-duration-normal","motion-duration-slow","motion-duration-deliberate"]],
+    ["Motion — Easing",   ["motion-easing-standard","motion-easing-decelerate","motion-easing-accelerate","motion-easing-sharp"]],
   ];
 
   for (const [groupLabel, keys] of groups) {

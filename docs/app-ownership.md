@@ -83,11 +83,13 @@ These assets do **not** belong to a single app — they are owned by the design 
 | Asset | Path | Notes |
 |-------|------|-------|
 | Design tokens | `tokens/tokens.json` | Source of truth — edit only here |
-| Prototype CSS | `components/prototypes/colors_and_type.css` | Shared across all prototypes |
+| Shared atoms JSX | `components/prototypes/shared/atoms.jsx` | Unified UI primitives for all prototypes |
+| Shared atoms CSS | `components/prototypes/shared/atoms.css` | Shared component styles for all prototypes |
 | Brand fonts | `components/prototypes/fonts/` | Inter Tight family (self-hosted) |
 | Logo mark | `components/prototypes/assets/logo-mark.png` | Used in all apps |
 | Favicon | `components/prototypes/assets/favicon.png` | Used in all prototypes |
-| Generated CSS | `generated/web/tokens.css` | Auto-generated — never edit |
+| Generated token CSS | `generated/prototype/base.css` | Auto-generated — never edit |
+| Generated web CSS | `generated/web/tokens.css` | Auto-generated — never edit |
 | Generated C# theme | `generated/blazor/RoomRentalTheme.cs` | Auto-generated — never edit |
 | Generated mobile JSON | `generated/mobile/tokens.json` | Auto-generated — never edit |
 
@@ -99,18 +101,26 @@ Atoms (field, button, checkbox, alert, divider) are **shared** — they live in
 `components/specs/atoms/` and `components/prototypes/shared/atoms.jsx`.
 App-specific compositions (AuthShell, AppShell/chrome) live in their app's folder.
 
-| Component | Category | Current location | Canonical location |
-|-----------|----------|-----------------|-------------------|
-| `Field` | Atom / Shared | `auth-server/App.jsx` | Should move to `shared/atoms.jsx` |
-| `Btn` | Atom / Shared | `auth-server/App.jsx` | Should move to `shared/atoms.jsx` |
-| `Checkbox` | Atom / Shared | `auth-server/App.jsx` | Should move to `shared/atoms.jsx` |
-| `Alert` | Atom / Shared | `auth-server/App.jsx` | Should move to `shared/atoms.jsx` |
-| `DividerOr` | Atom / Shared | `auth-server/App.jsx` | Should move to `shared/atoms.jsx` |
-| `Logo` | Brand / Shared | `auth-server/App.jsx` | Should move to `shared/atoms.jsx` |
+| Component | Category | Location | Status |
+|-----------|----------|----------|--------|
+| `Logo` | Brand / Shared | `shared/atoms.jsx` | ✅ Phase 2 |
+| `Icon` | Atom / Shared | `shared/atoms.jsx` | ✅ Phase 2 |
+| `Btn` | Atom / Shared | `shared/atoms.jsx` | ✅ Phase 2 (unified API) |
+| `IconBtn` | Atom / Shared | `shared/atoms.jsx` | ✅ Phase 2 |
+| `Field` | Atom / Shared | `shared/atoms.jsx` | ✅ Phase 2 |
+| `Checkbox` | Atom / Shared | `shared/atoms.jsx` | ✅ Phase 2 |
+| `Alert` | Atom / Shared | `shared/atoms.jsx` | ✅ Phase 2 |
+| `DividerOr` | Atom / Shared | `shared/atoms.jsx` | ✅ Phase 2 |
+| `Chip` | Atom / Shared | `shared/atoms.jsx` | ✅ Phase 2 |
+| `Avatar` | Atom / Shared | `shared/atoms.jsx` | ✅ Phase 2 |
+| `Card` | Atom / Shared | `shared/atoms.jsx` | ✅ Phase 2 |
+| `Money`, `DateVN`, `Phone`, `formatVND` | Formatter / Shared | `shared/atoms.jsx` | ✅ Phase 2 |
 | `AuthShell` | Layout / auth-server | `auth-server/App.jsx` | ✅ Correct location |
-| `AppShell` | Layout / manager-portal | `manager-portal/chrome.jsx` | ✅ Correct location |
-| `Kpi`, `Card`, `Icon` | Atom / Shared | `manager-portal/atoms.jsx` | Should move to `shared/atoms.jsx` |
 | `SsoButton`, `SsoBlock` | Feature / auth-server | `auth-server/App.jsx` | ✅ Correct location |
+| `AppShell` | Layout / manager-portal | `manager-portal/chrome.jsx` | ✅ Correct location |
+| `Kpi` | Portal-specific | `manager-portal/atoms.jsx` | ✅ Correct location |
+| `PageHeader` | Portal-specific | `manager-portal/atoms.jsx` | ✅ Correct location |
+| `FilterChip` | Portal-specific | `manager-portal/atoms.jsx` | ✅ Correct location |
 
 ---
 
@@ -120,12 +130,19 @@ Track alignment between the canonical token source and each consumer:
 
 | File | Declared version | Primary color | Alignment |
 |------|-----------------|---------------|-----------|
-| `tokens/tokens.json` | **2.0.0** | `#67C090` Green | ← source |
-| `generated/prototype/base.css` | 2.0.0 | `#67C090` Green | ✅ Generated — always in sync |
-| `generated/web/tokens.css` | 2.0.0 | `#67C090` Green | ✅ Generated — always in sync |
-| `generated/blazor/RoomRentalTheme.cs` | 2.0.0 | `#67C090` Green | ✅ Generated — always in sync |
-| `generated/mobile/tokens.json` | 2.0.0 | `#67C090` Green | ✅ Generated — always in sync |
+| `tokens/tokens.json` | **2.2.0** | `#67C090` Green | ← source |
+| `generated/prototype/base.css` | 2.2.0 | `#67C090` Green | ✅ Generated — always in sync |
+| `generated/web/tokens.css` | 2.2.0 | `#67C090` Green | ✅ Generated — always in sync |
+| `generated/blazor/RoomRentalTheme.cs` | 2.2.0 | `#67C090` Green | ✅ Generated — always in sync |
+| `generated/mobile/tokens.json` | 2.2.0 | `#67C090` Green | ✅ Generated — always in sync |
 
 > **Phase 1 complete (2026-05-21)**: `colors_and_type.css` (manually maintained, v1.3.0)
 > has been deleted. All prototype CSS is now generated from `tokens.json` via
 > `node scripts/generate-tokens.js`. Drift is structurally impossible.
+>
+> **Phase 2 complete (2026-05-21)**: All reusable UI atoms (`Btn`, `Field`, `Checkbox`,
+> `Alert`, `DividerOr`, `Chip`, `Avatar`, `Card`, `Icon`, `IconBtn`, `Logo`, formatters)
+> now live exclusively in `shared/atoms.jsx` + `shared/atoms.css`.
+> Both prototype apps load shared files before their own JSX.
+> The `Btn` component has a unified API merging both previous definitions.
+> Audit check ⑤ (Shared Atoms Integrity) enforces no duplication.

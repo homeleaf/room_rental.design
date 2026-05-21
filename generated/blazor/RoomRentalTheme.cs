@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually. Run: node scripts/generate-tokens.js
-// Room Rental Design System — v2.0.0 — 2026-05-21
+// Room Rental Design System — v2.2.0 — 2026-05-21
 // MudBlazor 9.x
 
 using MudBlazor;

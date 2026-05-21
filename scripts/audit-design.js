@@ -158,8 +158,9 @@ function checkVarUsage() {
   // All vars declared globally
   const globalDeclared = new Set(Object.keys(extractCssVars(protoCss)));
 
-  // All vars declared in app-scoped stylesheets
+  // All vars declared in shared + app-scoped stylesheets
   const appStylesheets = [
+    "components/prototypes/shared/atoms.css",
     "components/prototypes/auth-server/styles.css",
     "components/prototypes/manager-portal/styles.css",
   ];
@@ -171,8 +172,9 @@ function checkVarUsage() {
     }
   }
 
-  // Scan prototype JSX for var() references (excluding stylesheets already scanned)
+  // Scan all prototype JSX for var() references (excluding stylesheets already scanned)
   const scanFiles = [
+    "components/prototypes/shared/atoms.jsx",
     "components/prototypes/auth-server/App.jsx",
     "components/prototypes/manager-portal/atoms.jsx",
     "components/prototypes/manager-portal/chrome.jsx",
@@ -267,10 +269,10 @@ function extractVersionFromJson(content) {
     return m ? m[1] : "?";
   } catch { return "?"; }
 }
-function extractVersionFromChangelog(content) {
-  if (!content) return null;
-  const m = content.match(/##\s+\[(\d+\.\d+\.\d+)\]/);
-  return m ? m[1] : "?";
+// Returns true if the given version string appears as a heading in the changelog.
+function changelogHasVersion(content, version) {
+  if (!content) return false;
+  return new RegExp(`##\\s+\\[${version.replace(/\./g, "\\.")}\\]`).test(content);
 }
 
 function checkVersionConsistency() {
@@ -279,24 +281,28 @@ function checkVersionConsistency() {
   const tokens  = JSON.parse(tokensSrc);
   const version = tokens.$metadata?.version ?? "?";
 
-  const versionRefs = {
-    "tokens/tokens.json":                        version,
-    "generated/web/tokens.css":                  extractVersionFromComment(readFile("generated/web/tokens.css")),
-    "generated/prototype/base.css":              extractVersionFromComment(readFile("generated/prototype/base.css")),
-    "generated/blazor/RoomRentalTheme.cs":       extractVersionFromComment(readFile("generated/blazor/RoomRentalTheme.cs")),
-    "generated/mobile/tokens.json":              extractVersionFromJson(readFile("generated/mobile/tokens.json")),
-    "CHANGELOG.md":                              extractVersionFromChangelog(readFile("CHANGELOG.md")),
+  const generatedRefs = {
+    "generated/web/tokens.css":                 extractVersionFromComment(readFile("generated/web/tokens.css")),
+    "generated/prototype/base.css":             extractVersionFromComment(readFile("generated/prototype/base.css")),
+    "generated/blazor/RoomRentalTheme.cs":      extractVersionFromComment(readFile("generated/blazor/RoomRentalTheme.cs")),
+    "generated/mobile/tokens.json":             extractVersionFromJson(readFile("generated/mobile/tokens.json")),
   };
+  const changelogOk = changelogHasVersion(readFile("CHANGELOG.md"), version);
 
-  findings.versionRefs = versionRefs;
+  findings.versionRefs = { ...generatedRefs, "CHANGELOG.md": changelogOk ? version : "missing" };
 
-  const mismatches = Object.entries(versionRefs)
+  const mismatches = Object.entries(generatedRefs)
     .filter(([, v]) => v && v !== "?" && v !== version);
 
-  if (mismatches.length === 0) {
+  if (mismatches.length === 0 && changelogOk) {
     issue("info", "version-consistency",
-      `All files reference version ${version}`);
+      `All generated files and CHANGELOG reference version ${version}`);
   } else {
+    if (!changelogOk) {
+      issue("warn", "version-consistency",
+        `CHANGELOG.md has no entry for version ${version}`,
+        "Add a ## [${version}] section to CHANGELOG.md");
+    }
     for (const [file, v] of mismatches) {
       issue("warn", "version-consistency",
         `Version mismatch in ${file}: found "${v}", tokens.json says "${version}"`);
@@ -305,7 +311,51 @@ function checkVersionConsistency() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Check 5 — Spec coverage
+// Check 5 — Shared atoms integrity
+//   Verifies that shared/atoms.jsx and shared/atoms.css exist and that no
+//   prototype app-specific file re-declares atoms that should live in shared.
+// ─────────────────────────────────────────────────────────────────────────────
+function checkSharedAtoms() {
+  const sharedJsx = "components/prototypes/shared/atoms.jsx";
+  const sharedCss = "components/prototypes/shared/atoms.css";
+  const ok = fileExists(sharedJsx) && fileExists(sharedCss);
+
+  if (!ok) {
+    if (!fileExists(sharedJsx)) issue("error", "shared-atoms", `Missing: ${sharedJsx}`, "Phase 2 requires shared atoms — recreate this file");
+    if (!fileExists(sharedCss)) issue("error", "shared-atoms", `Missing: ${sharedCss}`, "Phase 2 requires shared atoms — recreate this file");
+    return;
+  }
+
+  // Check that app-specific styles.css files do not re-declare known shared selectors
+  const sharedSelectors = [".btn", ".field", ".checkbox", ".divider-or", ".alert", ".chip", ".avatar", ".card", ".icon-btn"];
+  const appStyles = [
+    { rel: "components/prototypes/auth-server/styles.css",    label: "auth-server/styles.css" },
+    { rel: "components/prototypes/manager-portal/styles.css", label: "manager-portal/styles.css" },
+  ];
+
+  const dupes = [];
+  for (const { rel, label } of appStyles) {
+    const css = readFile(rel) ?? "";
+    for (const sel of sharedSelectors) {
+      // Simple check: selector appears as own rule (not inside another rule like .drawer .btn)
+      const re = new RegExp("^\\." + sel.slice(1) + "\\s*[{,]", "m");
+      if (re.test(css)) dupes.push(`${sel} redeclared in ${label}`);
+    }
+  }
+
+  findings.sharedAtoms = { sharedJsx, sharedCss, duplicates: dupes };
+
+  if (dupes.length === 0) {
+    issue("info", "shared-atoms", `shared/atoms.jsx + shared/atoms.css present — no atom duplication detected in app stylesheets`);
+  } else {
+    for (const d of dupes) {
+      issue("warn", "shared-atoms", `Duplicate atom rule: ${d}`, "Remove from app stylesheet — the rule lives in shared/atoms.css");
+    }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Check 6 — Spec coverage
 // ─────────────────────────────────────────────────────────────────────────────
 function checkSpecCoverage() {
   const specDirs = {
@@ -348,6 +398,7 @@ checkGeneratedFreshness();
 checkVarUsage();
 checkScreenInventory();
 checkVersionConsistency();
+checkSharedAtoms();
 checkSpecCoverage();
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -362,11 +413,12 @@ const ICONS  = { error: "❌", warn: "⚠️ ", info: "ℹ️ " };
 const COLORS = { error: "\x1b[31m", warn: "\x1b[33m", info: "\x1b[36m", reset: "\x1b[0m" };
 
 const catLabels = {
-  "freshness":         "① Generated File Freshness",
-  "var-usage":         "② CSS Variable Usage",
-  "screen-inventory":  "③ Screen Inventory",
+  "freshness":          "① Generated File Freshness",
+  "var-usage":          "② CSS Variable Usage",
+  "screen-inventory":   "③ Screen Inventory",
   "version-consistency":"④ Version Consistency",
-  "spec-coverage":     "⑤ Spec Coverage",
+  "shared-atoms":       "⑤ Shared Atoms Integrity",
+  "spec-coverage":      "⑥ Spec Coverage",
 };
 
 const categories = [...new Set(issues.map(i => i.category))];

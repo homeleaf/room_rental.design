@@ -1,7 +1,7 @@
 /* =============================================================
    Auto-generated — do not edit manually.
    Run: node scripts/generate-tokens.js
-   Room Rental Design System — v2.0.0 — 2026-05-21
+   Room Rental Design System — v2.2.0 — 2026-05-21
    Palette: https://colorhunt.co/palette/ddf4e767c09026667f124170
    ============================================================= */
 
@@ -171,6 +171,19 @@
   --z-modal: 1300;
   --z-snackbar: 1400;
   --z-tooltip: 1500;
+
+  /* ── Motion — Duration ── */
+  --duration-instant: 0ms;
+  --duration-fast: 100ms;
+  --duration-normal: 150ms;
+  --duration-slow: 200ms;
+  --duration-deliberate: 300ms;
+
+  /* ── Motion — Easing ── */
+  --easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --easing-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --easing-sharp: cubic-bezier(0.4, 0, 0.6, 1);
 
   /* ── Derived aliases (semantic shortcuts for prototypes) ── */
   --color-appbar:  var(--color-secondary);     /* navy — appbar + drawer chrome */

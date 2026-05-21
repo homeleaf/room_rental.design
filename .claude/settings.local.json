@@ -11,7 +11,15 @@
       "Bash(echo \"started pid=$!\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:7821/auth-server/index.html)",
       "Bash(start http://127.0.0.1:7821/auth-server/index.html)",
-      "Bash(start http://127.0.0.1:7821/manager-portal/index.html)"
+      "Bash(start http://127.0.0.1:7821/manager-portal/index.html)",
+      "PowerShell(Start-Process \"C:\\\\Workspace\\\\temps\\\\room_rental.design\\\\components\\\\prototypes\\\\auth-server\\\\index.html\")",
+      "Bash(npm list *)",
+      "Bash(npx playwright *)",
+      "Bash(npx playwright@1.60.0 --version)",
+      "Bash(npm install *)",
+      "Bash(Start-Sleep -Seconds 2)",
+      "Bash(curl -s http://localhost:9876/components/prototypes/auth-server/index.html)",
+      "PowerShell(Start-Process \"http://localhost:3131/components/prototypes/auth-server/index.html\")"
     ]
   }
 }

@@ -1,49 +1,93 @@
 # Room Rental — Design System
 
-Single source of truth for UI/UX standards across all applications in the Room Rental Management System.
+**v2.2.0** · Single source of truth for UI/UX across all Room Rental applications.
 
-## What's Here
+---
+
+## Repository Structure
 
 ```
-tokens/tokens.json              ← Design tokens (W3C format) — edit here, generate everywhere
-generated/web/tokens.css        ← CSS custom properties for all web apps
-generated/blazor/RoomRentalTheme.cs  ← MudBlazor 9.x theme for Blazor WASM
-generated/mobile/tokens.json    ← Flat tokens for React Native / Flutter
-components/specs/               ← Component specifications (markdown)
-components/prototypes/          ← Claude Design exports (HTML prototypes)
-guidelines/typography.md        ← Typography rules and scale
-guidelines/iconography.md       ← Icon library and usage
-guidelines/writing-style.md     ← Copy, tone, date/number formats
-scripts/generate-tokens.js      ← Token generator (Node.js, no dependencies)
+tokens/tokens.json                   ← W3C Design Tokens — the ONLY file humans edit
+scripts/
+  generate-tokens.js                 ← Multi-target token generator (Node.js, zero deps)
+  audit-design.js                    ← Design system health check (6 checks)
+
+generated/                           ← AUTO-GENERATED — never edit manually
+  prototype/base.css                 ← Simplified CSS vars for prototypes (--color-primary)
+  web/tokens.css                     ← Verbose CSS vars for production web (--color-primary-DEFAULT)
+  blazor/RoomRentalTheme.cs          ← MudBlazor 9.x MudTheme
+  mobile/tokens.json                 ← Flat camelCase for React Native / Flutter
+
+components/
+  prototypes/
+    shared/atoms.jsx                 ← Unified UI atoms (Btn, Field, Chip, Avatar…) — all apps
+    shared/atoms.css                 ← Shared component styles — all apps
+    auth-server/                     ← Login, register, forgot, OAuth screens
+    manager-portal/                  ← Landlord workspace (dashboard, rooms, tenants…)
+  specs/
+    atoms/                           ← Atom component specs (button, form-controls, data-display)
+    auth-server/                     ← Auth screen specs (login, register, forgot, consent)
+    manager-portal/                  ← Portal screen specs (dashboard, rooms, tenants, contracts…)
+
+guidelines/
+  color.md                           ← Color roles, palette, WCAG contrast table
+  typography.md                      ← Type scale, font families
+  layout.md                          ← Page templates, spacing grid, grid patterns
+  motion.md                          ← Duration + easing tokens, animation rules
+  iconography.md                     ← Material Symbols usage
+  writing-style.md                   ← Vietnamese copy, tone, date/number formats
+
+docs/
+  app-ownership.md                   ← Ownership manifest: every screen → which app
+  decisions/                         ← Architecture Decision Records (ADR-001 … ADR-005)
+
+.claude/
+  agents/design-sync.md             ← Design governance subagent
+  commands/do.md                    ← /do slash command for design tasks
 ```
+
+---
 
 ## Quick Start
 
 ### Modify design tokens
 
-1. Edit `tokens/tokens.json`
-2. Run the generator:
-   ```bash
-   node scripts/generate-tokens.js
-   ```
-3. Commit all changes (tokens + generated files together)
+```bash
+# 1. Edit tokens (colors, spacing, motion, etc.)
+#    → tokens/tokens.json
 
-### Integrate into a Blazor WASM app
+# 2. Regenerate all outputs
+node scripts/generate-tokens.js
 
-Copy `generated/blazor/RoomRentalTheme.cs` into your project, or reference via git submodule.
+# 3. Verify health
+node scripts/audit-design.js
 
-In `Program.cs`:
-```csharp
-builder.Services.AddMudServices(config =>
-{
-    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
-});
-
-// Apply theme in App.razor or MainLayout.razor:
-// <MudThemeProvider Theme="RoomRentalTheme.Create()" />
+# 4. Commit tokens.json + all generated/ files together
 ```
 
-In `App.razor` or `MainLayout.razor`:
+### Open a prototype in the browser
+
+```
+components/prototypes/auth-server/index.html   ← auth screens
+components/prototypes/manager-portal/index.html ← portal screens
+```
+
+Open directly in any browser — no server or build step needed.
+
+---
+
+## Integration by Platform
+
+### Blazor WASM (MudBlazor 9.x)
+
+Copy `generated/blazor/RoomRentalTheme.cs` into your project.
+
+**Program.cs**:
+```csharp
+builder.Services.AddMudServices();
+```
+
+**App.razor** or **MainLayout.razor**:
 ```razor
 <MudThemeProvider Theme="@_theme" />
 @code {
@@ -51,17 +95,14 @@ In `App.razor` or `MainLayout.razor`:
 }
 ```
 
-### Integrate into a web app (React / Angular / Vue)
+### Web App (React / Angular / Vue)
 
-Add to your global CSS entry point:
+Import `generated/web/tokens.css` in your global stylesheet:
+
 ```css
-@import url('https://raw.githubusercontent.com/tuongdevs/room_rental.design/main/generated/web/tokens.css');
-```
+/* global.css */
+@import './tokens.css';   /* verbose names: --color-primary-DEFAULT */
 
-Or copy `generated/web/tokens.css` into your project and import locally.
-
-Use tokens in CSS:
-```css
 .primary-button {
   background-color: var(--color-primary-DEFAULT);
   color: var(--color-primary-on);
@@ -69,46 +110,93 @@ Use tokens in CSS:
 }
 ```
 
-### Integrate into a mobile app
+### Mobile (React Native / Flutter)
 
-Copy `generated/mobile/tokens.json` and import in your theme provider.
-
-React Native example:
 ```js
-import tokens from './tokens.json';
+// React Native
+import tokens from './generated/mobile/tokens.json';
 
 const theme = {
   colors: {
-    primary: tokens.colorPrimaryDEFAULT,
+    primary:    tokens.colorPrimaryDEFAULT,
+    secondary:  tokens.colorSecondaryDEFAULT,
     background: tokens.colorSurfaceBackground,
   },
+  spacing: { sm: tokens.spacing2, md: tokens.spacing4, lg: tokens.spacing6 },
 };
 ```
 
+---
+
+## Token Naming Convention
+
+| tokens.json | Production web CSS | Prototype CSS | C# MudBlazor |
+|-------------|-------------------|---------------|--------------|
+| `color.primary.DEFAULT` | `--color-primary-DEFAULT` | `--color-primary` | `Primary = "..."` |
+| `color.secondary.DEFAULT` | `--color-secondary-DEFAULT` | `--color-secondary` | `Secondary = "..."` |
+| `spacing.4` | `--spacing-4` | `--sp-4` | `16px` |
+| `border.radius.md` | `--border-radius-md` | `--radius-md` | `DefaultBorderRadius` |
+| `motion.duration.normal` | `--motion-duration-normal` | `--duration-normal` | (CSS only) |
+
+---
+
+## Color Roles (v2.0.0+)
+
+| Role | Token | Hex | Used for |
+|------|-------|-----|---------|
+| Primary | `color.primary.DEFAULT` | `#67C090` Green | CTA buttons, links, active states |
+| Secondary | `color.secondary.DEFAULT` | `#124170` Navy | Appbar, drawer, secondary CTAs |
+| Tertiary | `color.tertiary.DEFAULT` | `#26667F` Teal | Info, accent, pending status |
+
+> ⚠️ White text on `#67C090` fails WCAG AA (2.4:1). Use `color.primary.on` (navy) instead.
+> See `guidelines/color.md` for full WCAG contrast table.
+
+---
+
+## Applications
+
+| App | Stack | Prototype | Spec |
+|-----|-------|-----------|------|
+| AuthServer.UI (`auth-server`) | Blazor WASM + MudBlazor 9 | ✅ `prototypes/auth-server/` | ✅ `specs/auth-server/` |
+| Manager Portal (`manager-portal`) | Blazor WASM + MudBlazor 9 | ✅ `prototypes/manager-portal/` | ✅ `specs/manager-portal/` |
+| Tenant Portal (`tenant-portal`) | TBD (web) | 🔮 Planned | 🔮 Planned |
+| Admin Panel (`admin-panel`) | TBD | 🔮 Planned | 🔮 Planned |
+| Mobile (`mobile`) | React Native / Flutter | 🔮 Planned | 🔮 Planned |
+
+---
+
 ## Versioning
 
-This repo uses semantic versioning. Update `$metadata.version` in `tokens.json` with every release.
+```
+Major (X.0.0) → token renamed, removed, or semantic role changed (breaking)
+Minor (x.Y.0) → new token added, prototype or guideline added
+Patch (x.y.Z) → value tweaked, typo fixed, documentation update
+```
 
-| Change type | Version bump |
-|-------------|-------------|
-| New token added | Minor (1.1.0) |
-| Token value changed (color, size) | Minor (1.1.0) |
-| Token renamed or removed | Major (2.0.0) |
-| Generated file format changed | Major (2.0.0) |
+Edit `$metadata.version` in `tokens.json`, run the generator, and add a `CHANGELOG.md` entry.
+The audit script (`node scripts/audit-design.js`) verifies all generated files reference the same version.
+
+---
 
 ## Contributing
 
 1. Branch from `main`
-2. Edit `tokens/tokens.json` or add files to `components/specs/` or `guidelines/`
-3. Run `node scripts/generate-tokens.js` if tokens changed
-4. Open a PR — changes to `tokens.json` require review before merge
-5. After merge, notify all app teams to update their references
+2. For **token changes**: edit `tokens/tokens.json` only, then run `node scripts/generate-tokens.js`
+3. For **prototype changes**: edit files in `components/prototypes/` — never touch `generated/`
+4. For **spec changes**: edit or add markdown files in `components/specs/`
+5. Run `node scripts/audit-design.js` — fix all errors before opening a PR
+6. Add a `CHANGELOG.md` entry
+7. After merge, notify all app teams to update their token references
 
-## Applications Using This Design System
+---
 
-| App | Stack | Consumes |
-|-----|-------|---------|
-| AuthServer.UI | Blazor WASM + MudBlazor 9 | `RoomRentalTheme.cs` |
-| *(future)* Admin Portal | TBD | `tokens.css` |
-| *(future)* Tenant Mobile | TBD | `tokens.json` |
-| *(future)* Landlord App | TBD | `tokens.css` / `tokens.json` |
+## Further Reading
+
+| Document | Description |
+|----------|-------------|
+| [CLAUDE.md](CLAUDE.md) | AI agent context — token naming, workflow, rules |
+| [docs/app-ownership.md](docs/app-ownership.md) | Every screen and component mapped to its owning app |
+| [docs/decisions/](docs/decisions/) | Architecture Decision Records (why we made each choice) |
+| [guidelines/color.md](guidelines/color.md) | Color roles, WCAG, usage rules |
+| [guidelines/layout.md](guidelines/layout.md) | Page templates, spacing system, grid |
+| [guidelines/motion.md](guidelines/motion.md) | Animation tokens and rules |

@@ -1,7 +1,8 @@
 // AuthServer.UI Kit — recreation of HouseLeaf's Blazor auth surface.
 // Vietnamese copy. Tokens from generated/prototype/base.css (loaded by index.html).
+// Shared atoms (Logo, Btn, Field, Checkbox, Alert, DividerOr) come from shared/atoms.jsx.
 
-const { useState, useEffect } = React;
+const { useState } = React;
 
 // ---------------- Tweaks ----------------
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
@@ -79,64 +80,6 @@ function SsoBlock({ t }) {
       </div>
     </>
   );
-}
-
-// ---------------- Atoms ----------------
-
-function Logo({ size = 56 }) {
-  return (
-    <img src="../assets/logo-mark.png" width={size} height={size} alt="HouseLeaf" style={{ objectFit: 'contain' }} />
-  );
-}
-
-function Field({ label, type = "text", value, onChange, placeholder, help, error, name, autoComplete }) {
-  return (
-    <div className={`field ${error ? "err" : ""}`}>
-      <label className="lbl" htmlFor={name}>{label}</label>
-      <input
-        id={name}
-        name={name}
-        className="inp"
-        type={type}
-        value={value || ""}
-        placeholder={placeholder}
-        onChange={(e) => onChange?.(e.target.value)}
-        autoComplete={autoComplete}
-      />
-      {(error || help) && <span className="help">{error || help}</span>}
-    </div>
-  );
-}
-
-function Btn({ variant = "primary", full, children, onClick, type = "button", disabled, icon }) {
-  return (
-    <button type={type} className={`btn ${variant} ${full ? "full" : ""}`} onClick={onClick} disabled={disabled}>
-      {icon && <span className="ico">{icon}</span>}
-      {children}
-    </button>
-  );
-}
-
-function Checkbox({ checked, onChange, children }) {
-  return (
-    <label className="checkbox">
-      <input type="checkbox" checked={!!checked} onChange={(e) => onChange?.(e.target.checked)} />
-      <span>{children}</span>
-    </label>
-  );
-}
-
-function Alert({ kind = "info", icon, children }) {
-  return (
-    <div className={`alert ${kind}`}>
-      <span className="ico">{icon || (kind === "err" ? "error" : "info")}</span>
-      <span>{children}</span>
-    </div>
-  );
-}
-
-function DividerOr({ children = "hoặc" }) {
-  return <div className="divider-or">{children}</div>;
 }
 
 // ---------------- Shell ----------------

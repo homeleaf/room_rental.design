@@ -1,5 +1,7 @@
 // Manager Portal — screens
 
+const { useState } = React;
+
 // ---------------- Mock data ----------------
 const ROOMS = [
   { code: "101", floor: 1, area: 25, price: 2500000, status: "rented",    tenant: "Nguyễn Văn An",  end: "30/06/2026" },
