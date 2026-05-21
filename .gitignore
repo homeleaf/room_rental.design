@@ -2,3 +2,6 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.log
+# Screenshots / temp artifacts from verify/test sessions
+verify-*.png
+screenshot-*.png

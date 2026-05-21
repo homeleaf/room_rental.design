@@ -1,25 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:api.anthropic.com)",
-      "Bash(file webfetch-1779263933177-dd00xl.bin)",
-      "Bash(python3 -c ' *)",
-      "Bash(mkdir -p C:/Users/tle14_mantu/.claude/projects/C--Workspace-temps-room-rental-design/1d5edd32-d711-48b6-9333-43b014445f55/tool-results/extracted)",
-      "Bash(tar -xzf C:/Users/tle14_mantu/.claude/projects/C--Workspace-temps-room-rental-design/1d5edd32-d711-48b6-9333-43b014445f55/tool-results/webfetch-1779263933177-dd00xl.bin -C C:/Users/tle14_mantu/.claude/projects/C--Workspace-temps-room-rental-design/1d5edd32-d711-48b6-9333-43b014445f55/tool-results/extracted)",
-      "Bash(python3 *)",
       "Bash(node *)",
-      "Bash(echo \"started pid=$!\")",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:7821/auth-server/index.html)",
-      "Bash(start http://127.0.0.1:7821/auth-server/index.html)",
-      "Bash(start http://127.0.0.1:7821/manager-portal/index.html)",
-      "PowerShell(Start-Process \"C:\\\\Workspace\\\\temps\\\\room_rental.design\\\\components\\\\prototypes\\\\auth-server\\\\index.html\")",
-      "Bash(npm list *)",
-      "Bash(npx playwright *)",
-      "Bash(npx playwright@1.60.0 --version)",
-      "Bash(npm install *)",
-      "Bash(Start-Sleep -Seconds 2)",
-      "Bash(curl -s http://localhost:9876/components/prototypes/auth-server/index.html)",
-      "PowerShell(Start-Process \"http://localhost:3131/components/prototypes/auth-server/index.html\")"
+      "Bash(npm *)",
+      "PowerShell(Start-Process *)"
     ]
   }
 }
