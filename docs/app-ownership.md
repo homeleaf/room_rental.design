@@ -12,9 +12,9 @@
 | ID | Name | Stack | Status | Prototype folder | Spec folder |
 |----|------|-------|--------|-----------------|-------------|
 | `auth-server` | HouseLeaf AuthServer.UI | Blazor WASM + MudBlazor 9 | ✅ Active | `components/prototypes/auth-server/` | `components/specs/auth-server/` |
-| `manager-portal` | HouseLeaf Manager Portal | Blazor WASM + MudBlazor 9 | ✅ Active | `components/prototypes/manager-portal/` | `components/specs/manager-portal/` |
-| `tenant-portal` | HouseLeaf Tenant Portal | TBD (web) | 🔮 Planned | `components/prototypes/tenant-portal/` | `components/specs/tenant-portal/` |
-| `admin-panel` | HouseLeaf Admin Panel | TBD | 🔮 Planned | `components/prototypes/admin-panel/` | `components/specs/admin-panel/` |
+| `manager-portal` | HouseLeaf Manager Portal | Vue 3 / React | ✅ Active | `components/prototypes/manager-portal/` | `components/specs/manager-portal/` |
+| `tenant-portal` | HouseLeaf Tenant Portal | Vue 3 / React | 🔮 Planned | `components/prototypes/tenant-portal/` | `components/specs/tenant-portal/` |
+| `admin-panel` | HouseLeaf Admin Panel | Vue 3 / React | 🔮 Planned | `components/prototypes/admin-panel/` | `components/specs/admin-panel/` |
 | `mobile` | HouseLeaf Mobile | React Native / Flutter | 🔮 Planned | `components/prototypes/mobile/` | `components/specs/mobile/` |
 
 ---

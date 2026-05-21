@@ -78,9 +78,12 @@ The mapping from token keys to prototype CSS vars is defined in `scripts/generat
 
 | App | Stack | Consumes | Integration point |
 |-----|-------|---------|-------------------|
-| room_rental.auth | Blazor WASM + MudBlazor 9 | `RoomRentalTheme.cs` | `RoomRentalTheme.Create()` in Program.cs |
-| (future web apps) | React / Angular / Vue | `generated/web/tokens.css` | Import in global stylesheet |
+| room_rental.auth | Blazor WASM + MudBlazor 9 | `generated/blazor/RoomRentalTheme.cs` | `RoomRentalTheme.Create()` in Program.cs |
+| room_rental.manager | Vue 3 / React | `generated/web/tokens.css` | Import in main.js / app entry |
+| room_rental.tenant | Vue 3 / React | `generated/web/tokens.css` | Import in main.js / app entry |
 | (future mobile) | React Native / Flutter | `generated/mobile/tokens.json` | Import in theme provider |
+
+> See `docs/integration-guide.md` for step-by-step setup per stack including git submodule instructions.
 
 ## Rules for This Repo
 
