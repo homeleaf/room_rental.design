@@ -536,4 +536,210 @@ function PlaceholderScreen({ title, icon }) {
   );
 }
 
-Object.assign(window, { DashboardScreen, RoomsScreen, RoomDetailScreen, TenantsScreen, ContractsScreen, PaymentsScreen, PlaceholderScreen });
+// ---------------- Loading states showcase ----------------
+
+function LoadingScreen() {
+  return (
+    <>
+      <PageHeader
+        crumbs={[{ label: "Hệ thống" }]}
+        title="Loading states"
+      />
+      <div className="loading-page">
+        <div className="loading-grid">
+
+          {/* 1 · Circular spinner */}
+          <div className="loading-tile">
+            <div className="head">
+              <span className="ttl">Vòng tròn xoay</span>
+              <span className="sub">spinner / 0.9s</span>
+            </div>
+            <div className="demo">
+              <div className="rl-spinner"></div>
+              <div className="rl-spinner sm"></div>
+            </div>
+          </div>
+
+          {/* 2 · Indeterminate linear */}
+          <div className="loading-tile">
+            <div className="head">
+              <span className="ttl">Thanh tiến trình</span>
+              <span className="sub">linear / 2.1s</span>
+            </div>
+            <div className="demo" style={{ flexDirection: "column", alignItems: "stretch", gap: 10 }}>
+              <div className="rl-linear"></div>
+              <span style={{ textAlign: "center", fontSize: 12, color: "var(--fg-2)" }}>Đang tải dữ liệu...</span>
+            </div>
+          </div>
+
+          {/* 3 · Skeleton shimmer */}
+          <div className="loading-tile">
+            <div className="head">
+              <span className="ttl">Khung chờ</span>
+              <span className="sub">skeleton / 1.4s</span>
+            </div>
+            <div className="demo" style={{ alignItems: "stretch" }}>
+              <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: 8 }}>
+                <div className="rl-sk title"></div>
+                <div className="rl-sk line"></div>
+                <div className="rl-sk line"></div>
+                <div className="rl-sk short"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* 4 · Page-level loader */}
+          <div className="loading-tile mint">
+            <div className="head">
+              <span className="ttl">Trang đang tải</span>
+              <span className="sub">page / 0.9s</span>
+            </div>
+            <div className="demo" style={{ flexDirection: "column", gap: 10 }}>
+              <div className="rl-logo-ring">
+                <div className="ring"></div>
+                <img src="../assets/logo-mark.png" alt="HouseLeaf" />
+              </div>
+              <span style={{ fontSize: 12, color: "var(--fg-2)" }}>Đang tải...</span>
+            </div>
+          </div>
+
+          {/* 5 · Button with inline spinner */}
+          <div className="loading-tile">
+            <div className="head">
+              <span className="ttl">Nút đang xử lý</span>
+              <span className="sub">btn / inline</span>
+            </div>
+            <div className="demo">
+              <button
+                className="btn primary"
+                disabled
+                style={{ cursor: "not-allowed", gap: 8 }}
+              >
+                <div
+                  className="rl-spinner sm"
+                  style={{
+                    borderColor: "rgba(18,65,112,0.25)",
+                    borderTopColor: "var(--rr-navy)",
+                  }}
+                ></div>
+                Đang lưu...
+              </button>
+            </div>
+          </div>
+
+          {/* 6 · Three-dot pulse */}
+          <div className="loading-tile">
+            <div className="head">
+              <span className="ttl">Chấm nhịp</span>
+              <span className="sub">dots / 1.2s</span>
+            </div>
+            <div className="demo" style={{ flexDirection: "column", gap: 8 }}>
+              <div className="rl-dots">
+                <span className="d"></span>
+                <span className="d"></span>
+                <span className="d"></span>
+              </div>
+              <span style={{ fontSize: 12, color: "var(--fg-2)" }}>Đang đồng bộ</span>
+            </div>
+          </div>
+
+        </div>
+        <p className="loading-note">
+          Material-aligned, no spring physics. Primary spinner: <code>#67C090</code> on 12% navy track.{" "}
+          Circular cho thao tác ≤ 3s · linear cho tiến trình xác định · skeleton thay nội dung chưa tải · dots cho đồng bộ liên tục.
+        </p>
+      </div>
+    </>
+  );
+}
+
+// ---------------- Brand-404 Not Found ----------------
+
+function NotFoundScreen({ go }) {
+  return (
+    <>
+      <PageHeader
+        crumbs={[{ label: "Hệ thống" }]}
+        title="404 — Không tìm thấy"
+      />
+      <div className="error-screen-wrapper">
+        <div className="error-page">
+          <div className="glyph">
+            <div className="num">
+              4
+              <span className="zero zero-404">
+                <span className="ico">search_off</span>
+              </span>
+              4
+            </div>
+          </div>
+          <h2>Không tìm thấy trang</h2>
+          <p className="msg">
+            Đường dẫn bạn đang truy cập không tồn tại hoặc đã được di chuyển.
+            Hãy quay lại trang chủ hoặc kiểm tra lại đường dẫn.
+          </p>
+          <div className="actions">
+            <button className="err-btn primary" onClick={() => go("dashboard")}>
+              <span className="ico">home</span>Về tổng quan
+            </button>
+            <button className="err-btn ghost">
+              <span className="ico">bug_report</span>Báo lỗi
+            </button>
+          </div>
+          <span className="ref">/quan-ly/phong/9b4c-not-here</span>
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ---------------- Brand-403 Unauthorized ----------------
+
+function UnauthorizedScreen({ go }) {
+  return (
+    <>
+      <PageHeader
+        crumbs={[{ label: "Hệ thống" }]}
+        title="403 — Không có quyền"
+      />
+      <div className="error-screen-wrapper">
+        <div className="error-page">
+          <div className="glyph">
+            <div className="num">
+              4
+              <span className="zero zero-403">
+                <span className="ico">lock</span>
+              </span>
+              3
+            </div>
+          </div>
+          <h2>Không có quyền truy cập</h2>
+          <p className="msg">
+            Tài khoản của bạn không có quyền xem nội dung này.
+            Vui lòng liên hệ quản trị viên nếu bạn cần được cấp quyền.
+          </p>
+          <div className="actions">
+            <button className="err-btn primary" onClick={() => go("dashboard")}>
+              <span className="ico">arrow_back</span>Quay lại
+            </button>
+            <button className="err-btn ghost">
+              <span className="ico">support_agent</span>Liên hệ quản trị viên
+            </button>
+          </div>
+          <span className="meta">
+            <span className="dot" style={{ background: "var(--color-warning)" }}></span>
+            Đăng nhập với{" "}
+            <span className="acc">an.nguyen@houseleaf.vn</span>
+            {" "}· Vai trò: Nhân viên
+          </span>
+        </div>
+      </div>
+    </>
+  );
+}
+
+Object.assign(window, {
+  DashboardScreen, RoomsScreen, RoomDetailScreen,
+  TenantsScreen, ContractsScreen, PaymentsScreen, PlaceholderScreen,
+  LoadingScreen, NotFoundScreen, UnauthorizedScreen,
+});

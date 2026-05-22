@@ -13,10 +13,13 @@ function App() {
     case "tenants":   body = <TenantsScreen />; break;
     case "contracts": body = <ContractsScreen />; break;
     case "payments":  body = <PaymentsScreen />; break;
-    case "invoices":  body = <PlaceholderScreen title="Hóa đơn" icon="receipt_long" />; break;
-    case "maint":     body = <PlaceholderScreen title="Bảo trì" icon="build" />; break;
-    case "settings":  body = <PlaceholderScreen title="Cài đặt" icon="settings" />; break;
-    default:          body = <DashboardScreen go={setScreen} />;
+    case "invoices":      body = <PlaceholderScreen title="Hóa đơn" icon="receipt_long" />; break;
+    case "maint":         body = <PlaceholderScreen title="Bảo trì" icon="build" />; break;
+    case "settings":      body = <PlaceholderScreen title="Cài đặt" icon="settings" />; break;
+    case "loading":       body = <LoadingScreen />; break;
+    case "not-found":     body = <NotFoundScreen go={setScreen} />; break;
+    case "unauthorized":  body = <UnauthorizedScreen go={setScreen} />; break;
+    default:              body = <DashboardScreen go={setScreen} />;
   }
 
   return (

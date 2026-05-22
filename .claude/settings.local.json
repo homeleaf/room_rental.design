@@ -3,7 +3,8 @@
     "allow": [
       "Bash(node *)",
       "Bash(npm *)",
-      "PowerShell(Start-Process *)"
+      "PowerShell(Start-Process *)",
+      "WebFetch(domain:api.anthropic.com)"
     ]
   }
 }

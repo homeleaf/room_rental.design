@@ -36,8 +36,11 @@ const NAV = [
   { id: "contracts", label: "Hợp đồng",    icon: "description",    group: "Hoạt động" },
   { id: "payments",  label: "Thanh toán",  icon: "payments",       group: "Tài chính" },
   { id: "invoices",  label: "Hóa đơn",     icon: "receipt_long",   group: "Tài chính" },
-  { id: "maint",     label: "Bảo trì",     icon: "build",          group: "Khác" },
-  { id: "settings",  label: "Cài đặt",     icon: "settings",       group: "Khác" },
+  { id: "maint",        label: "Bảo trì",          icon: "build",              group: "Khác" },
+  { id: "settings",     label: "Cài đặt",          icon: "settings",           group: "Khác" },
+  { id: "loading",      label: "Loading states",   icon: "hourglass_empty",    group: "Hệ thống" },
+  { id: "not-found",    label: "404 Không tìm thấy", icon: "search_off",       group: "Hệ thống" },
+  { id: "unauthorized", label: "403 Không có quyền", icon: "lock",             group: "Hệ thống" },
 ];
 
 function Drawer({ current, onNavigate }) {
