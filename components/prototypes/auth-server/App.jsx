@@ -2,7 +2,7 @@
 // Vietnamese copy. Tokens from generated/prototype/base.css (loaded by index.html).
 // Shared atoms (Logo, Btn, Field, Checkbox, Alert, DividerOr) come from shared/atoms.jsx.
 
-const { useState } = React;
+const { useState, useRef, useEffect } = React;
 
 // ---------------- Tweaks ----------------
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
@@ -13,6 +13,121 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "ssoStyle": "outlined",
   "showRemember": true
 }/*EDITMODE-END*/;
+
+// ---------------- Phone field — country selector ----------------
+
+const F = {
+  VN: <svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#DA251D"/><path fill="#FF0" d="M15 5l1.18 3.63h3.82l-3.09 2.24 1.18 3.63L15 12.26l-3.09 2.24 1.18-3.63L10 8.63h3.82z"/></svg>,
+  US: <svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><g fill="#B22234"><rect width="30" height="1.54" y="0"/><rect width="30" height="1.54" y="3.08"/><rect width="30" height="1.54" y="6.15"/><rect width="30" height="1.54" y="9.23"/><rect width="30" height="1.54" y="12.31"/><rect width="30" height="1.54" y="15.38"/><rect width="30" height="1.54" y="18.46"/></g><rect width="13" height="10.77" fill="#3C3B6E"/></svg>,
+  GB: <svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#012169"/><path d="M0 0l30 20M30 0L0 20" stroke="#fff" strokeWidth="3"/><path d="M0 0l30 20M30 0L0 20" stroke="#C8102E" strokeWidth="1.5"/><path d="M15 0v20M0 10h30" stroke="#fff" strokeWidth="5"/><path d="M15 0v20M0 10h30" stroke="#C8102E" strokeWidth="3"/></svg>,
+  JP: <svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><circle cx="15" cy="10" r="6" fill="#BC002D"/></svg>,
+  KR: <svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><circle cx="15" cy="10" r="5" fill="#CD2E3A"/><path d="M15 5a5 5 0 0 0 0 10 2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 0 0-5z" fill="#0047A0"/></svg>,
+  CN: <svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#DE2910"/><path fill="#FFDE00" d="M6 4l1 2.6 2.7-.7-1.9 2 1.9 2-2.7-.7L6 14l-.4-2.8L3 12l2.3-1.7L4.1 8l2.5 1z"/></svg>,
+  SG: <svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><rect width="30" height="10" fill="#ED2939"/><path d="M9 5a4 4 0 1 0 0 8 4.5 4.5 0 1 1 0-8z" fill="#fff"/></svg>,
+  AU: <svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#00247D"/><rect width="15" height="10" fill="#00247D"/><path d="M0 0l15 10M15 0L0 10" stroke="#fff" strokeWidth="1.6"/><path d="M7.5 0v10M0 5h15" stroke="#fff" strokeWidth="2.5"/><path d="M7.5 0v10M0 5h15" stroke="#C8102E" strokeWidth="1.4"/><circle cx="22" cy="13" r="1.4" fill="#fff"/><circle cx="25" cy="7" r="1.1" fill="#fff"/></svg>,
+  FR: <svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><rect width="10" height="20" fill="#002654"/><rect width="10" height="20" x="20" fill="#CE1126"/></svg>,
+  DE: <svg viewBox="0 0 30 20"><rect width="30" height="6.67" fill="#000"/><rect width="30" height="6.67" y="6.67" fill="#DD0000"/><rect width="30" height="6.67" y="13.33" fill="#FFCE00"/></svg>,
+  TH: <svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#A51931"/><rect width="30" height="13.3" y="3.3" fill="#fff"/><rect width="30" height="6.7" y="6.7" fill="#2D2A4A"/></svg>,
+  MY: <svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#cc0001"/><g fill="#fff"><rect width="30" height="1.43" y="1.43"/><rect width="30" height="1.43" y="4.29"/><rect width="30" height="1.43" y="7.14"/><rect width="30" height="1.43" y="10"/><rect width="30" height="1.43" y="12.86"/><rect width="30" height="1.43" y="15.71"/><rect width="30" height="1.43" y="18.57"/></g><rect width="15" height="11.43" fill="#010066"/></svg>,
+};
+
+const COUNTRIES = [
+  { iso: "VN", name: "Việt Nam",   dial: "+84", min: 9,  max: 9  },
+  { iso: "US", name: "Hoa Kỳ",    dial: "+1",  min: 10, max: 10 },
+  { iso: "GB", name: "Anh",       dial: "+44", min: 10, max: 10 },
+  { iso: "JP", name: "Nhật Bản",  dial: "+81", min: 10, max: 10 },
+  { iso: "KR", name: "Hàn Quốc",  dial: "+82", min: 9,  max: 10 },
+  { iso: "CN", name: "Trung Quốc",dial: "+86", min: 11, max: 11 },
+  { iso: "SG", name: "Singapore", dial: "+65", min: 8,  max: 8  },
+  { iso: "MY", name: "Malaysia",  dial: "+60", min: 9,  max: 10 },
+  { iso: "TH", name: "Thái Lan",  dial: "+66", min: 9,  max: 9  },
+  { iso: "AU", name: "Úc",        dial: "+61", min: 9,  max: 9  },
+  { iso: "FR", name: "Pháp",      dial: "+33", min: 9,  max: 9  },
+  { iso: "DE", name: "Đức",       dial: "+49", min: 10, max: 11 },
+];
+
+function validatePhone(raw, country) {
+  let digits = (raw || "").replace(/\D/g, "");
+  if (!digits) return { error: "Vui lòng nhập số điện thoại." };
+  if (digits.length > country.max && digits.startsWith("0")) digits = digits.slice(1);
+  if (digits.startsWith("0")) digits = digits.replace(/^0+/, "");
+  if (digits.length < country.min || digits.length > country.max) {
+    return { error: "Số điện thoại không hợp lệ. Vui lòng kiểm tra lại." };
+  }
+  return { ok: true };
+}
+
+function PhoneField({ country, setCountry, value, onChange, error }) {
+  const [open, setOpen] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [query, setQuery] = useState("");
+  const wrapRef = useRef(null);
+  const searchRef = useRef(null);
+
+  useEffect(() => {
+    function onDoc(e) { if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false); }
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, []);
+  useEffect(() => { if (open && searchRef.current) searchRef.current.focus(); }, [open]);
+
+  const filtered = COUNTRIES.filter((c) => {
+    const q = query.trim().toLowerCase();
+    if (!q) return true;
+    return c.name.toLowerCase().includes(q) || c.dial.includes(q) || c.iso.toLowerCase().includes(q);
+  });
+
+  const phoneCheck = validatePhone(value, country);
+  const valid = !!phoneCheck.ok && !!value;
+
+  return (
+    <div className={`field${error ? " err" : ""}${error && focused ? " err-focused" : ""}`}>
+      <label className="lbl" htmlFor="phone">Số điện thoại</label>
+      <div className={`phone-group${focused ? " focused" : ""}`} ref={wrapRef}>
+        <button type="button" className="cc-btn" onClick={() => setOpen(!open)}
+          aria-label="Chọn mã quốc gia" aria-expanded={open}>
+          <span className="flag">{F[country.iso]}</span>
+          <span className="dial">{country.dial}</span>
+          <span className="chev">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </span>
+        </button>
+        <input
+          id="phone" name="phone" className="inp" type="tel" inputMode="numeric"
+          value={value || ""} placeholder="912 345 678" autoComplete="tel-national"
+          onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+          onChange={(e) => onChange?.(e.target.value)}
+        />
+        {valid && (
+          <span className="valid-tick">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+          </span>
+        )}
+        {open && (
+          <div className="cc-menu" onMouseDown={(e) => e.stopPropagation()}>
+            <input ref={searchRef} className="cc-search" placeholder="Tìm quốc gia..."
+              value={query} onChange={(e) => setQuery(e.target.value)} />
+            {filtered.length === 0 && <div className="cc-empty">Không tìm thấy quốc gia.</div>}
+            {filtered.map((c) => (
+              <button type="button" key={c.iso}
+                className={`cc-item${c.iso === country.iso ? " active" : ""}`}
+                onClick={() => { setCountry(c); setOpen(false); setQuery(""); }}>
+                <span className="flag">{F[c.iso]}</span>
+                <span className="nm">{c.name}</span>
+                <span className="dial">{c.dial}</span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      {error && <span className="help">{error}</span>}
+    </div>
+  );
+}
 
 // ---------------- SSO buttons ----------------
 
@@ -321,14 +436,19 @@ function LoginScreen({ go, t }) {
 }
 
 function RegisterScreen({ go }) {
-  const [v, setV] = useState({ name: "", email: "", phone: "", pw: "", pw2: "" });
-  const set = (k) => (val) => setV({ ...v, [k]: val });
+  const [v, setV] = useState({ ho: "", ten: "", email: "", phone: "", pw: "", pw2: "" });
+  const set = (k) => (val) => setV((s) => ({ ...s, [k]: val }));
+  const [country, setCountry] = useState(COUNTRIES[0]);
   const [terms, setTerms] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [phoneTouched, setPhoneTouched] = useState(false);
 
-  const phoneError = submitted && v.phone && !/^0\d{9,10}$/.test(v.phone.replace(/\s/g, ""))
-    ? "Số điện thoại không hợp lệ. Vui lòng kiểm tra lại."
-    : null;
+  const phoneCheck = validatePhone(v.phone, country);
+  const showPhoneError = (submitted || phoneTouched) && v.phone !== "" && phoneCheck.error;
+  const emailError = submitted && v.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.email)
+    ? "Email không hợp lệ. Vui lòng kiểm tra lại." : null;
+  const pw2Error = submitted && v.pw2 && v.pw !== v.pw2
+    ? "Mật khẩu nhập lại không khớp." : null;
 
   return (
     <AuthShell
@@ -336,11 +456,19 @@ function RegisterScreen({ go }) {
       sub="Bắt đầu quản lý phòng trọ của bạn — miễn phí."
       footer={<>Đã có tài khoản? <a href="#" onClick={(e) => { e.preventDefault(); go("login"); }}>Đăng nhập</a></>}
     >
-      <Field label="Họ và tên" name="name" value={v.name} onChange={set("name")} placeholder="VD: Nguyễn Văn An" />
-      <Field label="Email" name="email" type="email" value={v.email} onChange={set("email")} placeholder="Nhập email của bạn" />
-      <Field label="Số điện thoại" name="phone" value={v.phone} onChange={set("phone")} placeholder="VD: 0912 345 678" error={phoneError} />
-      <Field label="Mật khẩu" name="pw" type="password" value={v.pw} onChange={set("pw")} placeholder="Tối thiểu 8 ký tự" />
-      <Field label="Nhập lại mật khẩu" name="pw2" type="password" value={v.pw2} onChange={set("pw2")} />
+      <div className="name-row">
+        <Field label="Họ" name="ho" value={v.ho} onChange={set("ho")} placeholder="Nhập họ" autoComplete="family-name" />
+        <Field label="Tên" name="ten" value={v.ten} onChange={set("ten")} placeholder="Nhập tên" autoComplete="given-name" />
+      </div>
+      <Field label="Email" name="email" type="email" value={v.email} onChange={set("email")} placeholder="Nhập email của bạn" autoComplete="email" error={emailError} />
+      <PhoneField
+        country={country} setCountry={setCountry}
+        value={v.phone}
+        onChange={(val) => { set("phone")(val); setPhoneTouched(true); }}
+        error={showPhoneError ? phoneCheck.error : null}
+      />
+      <Field label="Mật khẩu" name="pw" type="password" value={v.pw} onChange={set("pw")} placeholder="Tối thiểu 8 ký tự" autoComplete="new-password" />
+      <Field label="Nhập lại mật khẩu" name="pw2" type="password" value={v.pw2} onChange={set("pw2")} autoComplete="new-password" error={pw2Error} />
       <Checkbox checked={terms} onChange={setTerms}>
         <span>Tôi đồng ý với <a href="#" style={{ color: "var(--color-primary)" }}>Điều khoản sử dụng</a> và <a href="#" style={{ color: "var(--color-primary)" }}>Chính sách bảo mật</a>.</span>
       </Checkbox>

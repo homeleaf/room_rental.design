@@ -4,7 +4,14 @@
       "Bash(node *)",
       "Bash(npm *)",
       "PowerShell(Start-Process *)",
-      "WebFetch(domain:api.anthropic.com)"
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(mkdir -p /tmp/design-export)",
+      "Bash(cp C:/Users/Admin/.claude/projects/D--Projects-room-rental-system-design-standard-room-rental-design/d24c3ab1-ac4c-4564-a3f9-32fd81d1171b/tool-results/webfetch-1780128759624-o8qawk.bin /tmp/design-export/design.tar.gz)",
+      "Bash(tar -xzf /tmp/design-export/design.tar.gz -C /tmp/design-export)",
+      "Read(//tmp/**)",
+      "Bash(mkdir -p /tmp/design-export2)",
+      "Bash(cp C:/Users/Admin/.claude/projects/D--Projects-room-rental-system-design-standard-room-rental-design/d24c3ab1-ac4c-4564-a3f9-32fd81d1171b/tool-results/webfetch-1780129499616-3o1f1p.bin /tmp/design-export2/design.tar.gz)",
+      "Bash(tar -xzf /tmp/design-export2/design.tar.gz -C /tmp/design-export2)"
     ]
   }
 }
