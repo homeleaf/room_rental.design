@@ -88,6 +88,35 @@ body { margin: 0; background: var(--color-bg); }
   font-size: 28px;
 }
 
+/* ---- Brand lockup — logo chip + wordmark used in standalone screens ---- */
+.brand-lockup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.logo-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-surface);
+}
+.logo-chip.ring {
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(103,192,144,.15);
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--color-secondary);
+}
+
+/* auth-hero — centred brand lockup row at top of auth card */
+.auth-hero { display: flex; justify-content: center; }
+
 /* ---- Name row (first / last name side-by-side) ---- */
 .name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
